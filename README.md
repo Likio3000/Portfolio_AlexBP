@@ -1,5 +1,5 @@
 # Portfolio Repository
-Hello! I'm a data analyst based in Barcelona, and I'm thrilled to share my latest projects with you. Each one presents unique challenges and learning experiences. My passion for uncovering hidden trends and insights within data is a common thread throughout my work.
+Hello! I'm Alex, I'm a data analyst based in Barcelona, and I'm thrilled to share my latest projects with you. Each one presents unique challenges and learning experiences. My passion for uncovering hidden trends and insights within data is a common thread throughout my work.
 
 ## Project 1: Sales Data Analysis
 In this project, I delved into the world of sales data analysis. The main focus was to understand how sales were distributed among various categorical variables. Using data visualization techniques, I was able to identify trends and patterns that shed light on the best-performing product chains in terms of sales and customer satisfaction. Furthermore, I analyzed the most active sales hours, providing a more comprehensive understanding of the dynamics behind the sales patterns.
