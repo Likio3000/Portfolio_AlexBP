@@ -9,4 +9,4 @@ My second project served as an introduction to forecasting using two different m
 
 ## About Me
 
-I'm a 25-year-old data analyst who is passionate about uncovering insights and trends hidden in data. I have experience working with a variety of datasets and am always looking for new challenges. If you're interested in working together, please feel free to contact me. I'm ready to get to work!
+I'm a 24-year-old data analyst who is passionate about uncovering insights and trends hidden in data. I have experience working with a variety of datasets and am always looking for new challenges. If you're interested in working together, please feel free to contact me. I'm ready to get to work!
