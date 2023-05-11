@@ -1,0 +1,19 @@
+For the LSTM model we notice we have an issue somewhere along te learning because the predictions prices seem stuck at a level.
+
+For the regression model we notice the R^^2 is appropiate and the mean squared error follows normal values for what its meant to do.
+
+
+In the near future, to improve the LSTM i will:
+Normalization or Scaling: First things first, I'm going to double-check our data normalization or scaling process. If our data isn't correctly normalized or scaled, our model will struggle to learn effectively. I see that we're using the MinMaxScaler, which is generally a good choice, but I'll verify that it's been correctly applied and that it isn't causing any skewed transformations.
+
+Feature Selection: Next, I'll review the features we're currently using to train our model. I want to make sure they're all relevant to our target variable. If they're not, our model isn't going to learn as well as it could. I'll use techniques like correlation analysis or feature importance from tree-based models to confirm the relevance of our features.
+
+Learning Rate Adjustment: Our current learning rate might be too high or too low. If it's too high, we could be overshooting the optimal solution; if it's too low, our model might need many epochs to converge to a good solution or might get stuck in a poor local minimum. I'll experiment with tuning our learning rate to see if that improves performance.
+
+Model Complexity: Right now, our model might be too complex or too simple to learn efficiently from our data. If it's too complex, we run the risk of overfitting to the training data and failing to generalize. If it's too simple, we might be underfitting and failing to capture the underlying patterns in the data. I'll play around with adjusting the number of layers and the number of units in each layer.
+
+Loss Function: We're currently using Mean Squared Error (MSE) as our loss function, but we might find that Mean Absolute Error (MAE) gives us better results. MAE is less sensitive to outliers in the data than MSE. If our data contains many outliers, the model might perform better with MAE. But if we don't have many outliers, MSE could be the way to go as it emphasizes larger errors.
+
+Optimizer: Finally, I'm considering trying out different optimization algorithms. While Adam is a solid choice in many cases, we might find that others like RMSprop or SGD yield better results.
+
+While we're making these adjustments, I'll be keeping a close eye on whether our model is overfitting or underfitting, and I'll consider using techniques like cross-validation to get a more robust estimate of our model's performance. I believe these steps will help us improve our model's performance over time.
