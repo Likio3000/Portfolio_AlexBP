@@ -12,7 +12,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 pd.set_option('display.max_columns', None)
 
 # Import data
-df = pd.read_csv('supermarket_sales.csv')
+df = pd.read_csv('/app/data/input/supermarket_sales.csv')
 
 # Log the original len(data) and also the original column names
 logging.info(f'Original Length of Data: {len(df)}')
@@ -90,6 +90,7 @@ if not non_numeric_rows.empty:
     logging.warning(f'Non-numeric rows found: {non_numeric_rows}')
 
 # Save the cleaned dataset to:
-df.to_csv('clean_data_supermarket.csv', index=False)
+df.to_csv('/app/data/output/clean_data_supermarket.csv', index=False)
+
 
 logging.info('Data cleaning process completed and saved to clean_data_supermarket.csv')
