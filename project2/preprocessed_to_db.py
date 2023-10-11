@@ -24,7 +24,7 @@ def query_sqlite_db(query, conn):
 
 if __name__ == "__main__":
     csv_file_path = 'project2/processed_data/processed_BTC_data.csv'
-    db_file_path = 'BTC_data.db'
+    db_file_path = 'project2/BTC_data.db'
     table_name = 'BTC_data'
     
     # Read data from CSV file into DataFrame
