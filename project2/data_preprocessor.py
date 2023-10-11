@@ -1,8 +1,13 @@
+import pandas as pd 
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+import os 
 
-import os
-import pandas as pd
 
-OUTPUT_FILE_PATH = 'processed_data/processed_BTC_data.csv'
+
+INPUT_FILE_PATH = 'project2/raw_data/BYBIT_BTC_DATA.csv'
+OUTPUT_FILE_PATH = 'project2/processed_data/processed_BTC_data.csv'
 
 def drop_columns_if_present(df, columns_to_drop=None):
         if columns_to_drop is None:
@@ -39,6 +44,7 @@ def preprocess_data(raw_data, columns_to_keep=None):
         data['target_close'] = data['close'].shift(-1)
         data.columns = [col.lower().replace(' ', '_').replace('#', '').replace('.', '_') for col in data.columns]
         data.columns = [shorten_column_name(col) for col in data.columns]
+        data.set_index('time', inplace=True)
 
         # Drop unnecessary columns
         data = drop_columns_if_present(data)
@@ -60,10 +66,11 @@ def preprocess_data(raw_data, columns_to_keep=None):
         data.to_csv(OUTPUT_FILE_PATH, index=False)
         return data
 
+
 if __name__ == "__main__":
     # Load the data
-    df = pd.read_csv('project2/processed_data/processed_BTC_data.csv')
-    df.set_index('time', inplace=True)
+    df = pd.read_csv(INPUT_FILE_PATH)
+    
 
     # Define the columns you trust
     columns_we_trust = ['open', 'high', 'low', 'close', 'vwap', 'upper_b1', 'lower_b1',
@@ -73,5 +80,4 @@ if __name__ == "__main__":
 
     # Preprocess the data
     df = preprocess_data(df, columns_to_keep=columns_we_trust)
-
-    # Continue with your data manipulation and visualization tasks
+    print(df.head())
