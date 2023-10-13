@@ -44,7 +44,6 @@ def preprocess_data(raw_data, columns_to_keep=None):
         data['target_close'] = data['close'].shift(-1)
         data.columns = [col.lower().replace(' ', '_').replace('#', '').replace('.', '_') for col in data.columns]
         data.columns = [shorten_column_name(col) for col in data.columns]
-        data.set_index('time', inplace=True)
 
         # Drop unnecessary columns
         data = drop_columns_if_present(data)
@@ -73,7 +72,7 @@ if __name__ == "__main__":
     
 
     # Define the columns you trust
-    columns_we_trust = ['open', 'high', 'low', 'close', 'vwap', 'upper_b1', 'lower_b1',
+    columns_we_trust = ['time', 'open', 'high', 'low', 'close', 'vwap', 'upper_b1', 'lower_b1',
                         'upper_b2', 'lower_b2', 'upper_b3', 'lower_b3', 'basis', 'upper',
                         'lower', 'parabolicsar', 'twap', 'volume', 'volume_ma', 'adx',
                         'efi', 'atr', 'obv', 'roc', 'cci', 'target_close']
