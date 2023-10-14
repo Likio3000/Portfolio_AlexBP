@@ -51,11 +51,6 @@ def export_df_head_to_csv(df: pd.DataFrame, num_rows: int = 5, base_directory: U
         logging.error(f"An error occurred: {e}")
         return None
 
-# Sample DataFrame
-sample_df = pd.DataFrame({
-    'Column1': range(1, 11),
-    'Column2': list('abcdefghij')
-})
 
 # Example usage
 export_df_head_to_csv(sample_df, num_rows=5, base_directory='..', folder_name='heads_csv', file_name='sample_head.csv')
