@@ -22,7 +22,6 @@ def initialize_webdriver(url):
         logging.error(f"Error initializing webdriver: {e}")
 
 def scrape_data(driver, xpath_groups):
-    wait = WebDriverWait(driver, 15)
     data = []
     try:
         for group_name, indices in xpath_groups.items():
