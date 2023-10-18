@@ -7,6 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from datetime import datetime
 import sqlite3
 from contextlib import closing
+from selenium.common.exceptions import NoSuchElementException
 
 logging.basicConfig(level=logging.INFO)
 
@@ -16,6 +17,14 @@ def initialize_webdriver(url):
         driver.maximize_window()
         driver.get(url)
         driver.implicitly_wait(10)  # 10 seconds
+
+        # Find the consent button on coinglass data terms
+        consent_button = driver.find_element(By.XPATH, '/html/body/div[2]/div[2]/div[1]/div[2]/div[2]/button[1]')
+        consent_button.click()
+        return driver
+
+    except NoSuchElementException as e:
+        print("Button of consent not found: {e}")
 
         return driver
     except Exception as e:
