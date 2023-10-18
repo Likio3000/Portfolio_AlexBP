@@ -8,6 +8,11 @@ from datetime import datetime
 import sqlite3
 from contextlib import closing
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.action_chains import ActionChains
+import time
+from selenium.webdriver.common.keys import Keys
+
+
 
 logging.basicConfig(level=logging.INFO)
 
@@ -21,6 +26,13 @@ def initialize_webdriver(url):
         # Find the consent button on coinglass data terms
         consent_button = driver.find_element(By.XPATH, '/html/body/div[2]/div[2]/div[1]/div[2]/div[2]/button[1]')
         consent_button.click()
+        
+        # Scroll down the page
+        action = ActionChains(driver)
+        for _ in range(3):  # Scroll down 3 times
+            action.send_keys(Keys.PAGE_DOWN).perform()
+            time.sleep(1)  # Wait for 1 second between each scroll
+        
         return driver
 
     except NoSuchElementException as e:
