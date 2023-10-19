@@ -154,3 +154,20 @@ def export_df_head_to_csv(
     except Exception as e:
         logging.error(f"An error occurred: {e}")
         return None
+
+
+def round_decimals(df, decimal_places=2):
+    """
+    Rounds the columns with numerical values to the specified number of decimal places.
+
+    Parameters:
+        df (pd.DataFrame): The DataFrame whose columns are to be rounded.
+        decimal_places (int): The number of decimal places to round to. Default is 2.
+
+    Returns:
+        pd.DataFrame: A new DataFrame with the specified columns rounded.
+    """
+    # Identify columns to round (only numeric types)
+    cols_to_round = df.select_dtypes(include=["float64"]).columns
+    df[cols_to_round] = df[cols_to_round].round(decimal_places)
+    return df
