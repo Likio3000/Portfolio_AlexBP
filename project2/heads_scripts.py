@@ -20,7 +20,7 @@ def export_df_head_to_csv(
 
     Parameters:
         df (pd.DataFrame): The DataFrame to export.
-        num_rows (int): Number of rows to include in the head. Default is 5.
+        num_rows (int): Number of rowsgg to include in the head. Default is 5.
         base_directory (Union[str, Path]): The base directory for the folder. Default is one level up ('..').
         folder_name (str): The name of the folder to save the CSV in. Default is 'heads_csv'.
         file_name (str): The name of the CSV file. Default is 'df_head.csv'.
@@ -59,10 +59,11 @@ def export_df_head_to_csv(
 
 
 # Example usage
-export_df_head_to_csv(
+"""export_df_head_to_csv(
     sample_df,
     num_rows=5,
     base_directory="..",
     folder_name="heads_csv",
     file_name="sample_head.csv",
 )
+"""
