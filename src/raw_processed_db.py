@@ -1,8 +1,4 @@
 import sys
-
-sys.path.append(
-    "C:\\Users\\jbethune\\Desktop\\ML_introbook\\hayqellorar\\Portfolio_AlexBP\\project2"
-)
 from utils.utils import (
     save_to_csv,
     read_csv_to_dataframe,
@@ -155,7 +151,7 @@ def feature_engineering(df):
     return df
 
 
-if __name__ == "__main__":
+def run_raw_processing():
     logging.info("Starting the preprocessing.")
 
     logging.info("Reading the raw data from a CSV file.")
@@ -187,7 +183,7 @@ if __name__ == "__main__":
         db.create_table(df, table_name)
 
         logging.info("Querying to make sure the data has been inserted properly.")
-        query = f"SELECT * FROM {table_name} LIMIT 5;"
+        query = f"SELECT * FROM {table_name} LIMIT 1;"
         queried_data = db.query(query)
         if queried_data is not None:
             logging.info("Data successfully inserted into the database.")
@@ -196,3 +192,7 @@ if __name__ == "__main__":
             logging.error("Failed to query the database.")
 
     logging.info("Preprocessing and database update completed successfully.")
+
+
+if __name__ == "__main__":
+    run_raw_processing()

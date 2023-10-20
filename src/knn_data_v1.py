@@ -8,9 +8,7 @@ import numpy as np
 from contextlib import closing
 import sys
 
-sys.path.append(
-    "C:\\Users\\jbethune\\Desktop\\ML_introbook\\hayqellorar\\Portfolio_AlexBP\\project2"
-)
+
 from utils.utils import SQLiteDB
 
 
@@ -190,7 +188,7 @@ def main_logic():
         table_name = "KNN_data"
         with SQLiteDB(db_file_path) as db:
             db.create_table(df, table_name)
-            query = f"SELECT * FROM {table_name} LIMIT 5;"
+            query = f"SELECT * FROM {table_name} LIMIT 1;"
             queried_data = db.query(query)
             if queried_data is not None:
                 print(queried_data)
@@ -198,4 +196,5 @@ def main_logic():
         print("DataFrame could not be read from the CSV file.")
 
 
-main_logic()
+if __name__ == "__main__":
+    main_logic()
