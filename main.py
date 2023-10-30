@@ -27,7 +27,10 @@ def main():
     logging.info("Starting KNN data preparacion")
     main_logic()
     logging.info("KNN data is ready for training")
+    logging.info("Getting ready to scrape")
     run_scraper_liq()
+    logging.info("Scraping completed, getting ready to deploy")
+    
 
 
 if __name__ == "__main__":
