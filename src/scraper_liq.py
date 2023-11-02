@@ -2,7 +2,6 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 import pandas as pd
 import logging
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from datetime import datetime
 import sqlite3
@@ -40,7 +39,7 @@ def initialize_webdriver(url):
     except NoSuchElementException as e:
         print("Button of consent not found: {e}")
 
-        return driver
+        pass
     except Exception as e:
         logging.error(f"Error initializing webdriver: {e}")
 
