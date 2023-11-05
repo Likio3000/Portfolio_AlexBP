@@ -176,6 +176,7 @@ def plot_top_traders_long_short_ratios(df):
 
 
 # Streamlit App
+# Streamlit App
 def main():
     st.title("Cryptocurrency Data Viewer")
 
@@ -223,6 +224,9 @@ def main():
                 latest_close = price_ohlc_data.iloc[0]["c"]
                 st.metric("Closing Price", f"${latest_close}")
 
+                # Plot Price data
+                fig_price = plot_closing_prices(price_ohlc_data, "Price Over Time")
+
             # Fetch Top Long/Short Account Ratio data
             with col3:
                 st.write("Fetching Long/Short Ratios data...")
@@ -266,11 +270,11 @@ def main():
 
             # Display plots
             with col1:
-                st.plotly_chart(fig_oi)
-                st.plotly_chart(fig_ratio)
-                st.plotly_chart(fig_top_traders_ratio)
-            with col2:
                 st.plotly_chart(fig_price)
+                st.plotly_chart(fig_ratio)
+            with col3:
+                st.plotly_chart(fig_oi)
+                st.plotly_chart(fig_top_traders_ratio)
 
 
 # Run the Streamlit app
