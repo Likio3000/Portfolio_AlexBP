@@ -5,6 +5,14 @@ import plotly.express as px
 import streamlit as st
 import numpy as np
 import plotly.graph_objects as go
+import json
+
+# Load the configuration file
+with open("config.json") as config_file:
+    config = json.load(config_file)
+
+# Use the API key from the configuration file
+coinglass_api_key = config["coinglassSecret"]
 
 
 # Function to find available pairs for a given coin
@@ -12,7 +20,7 @@ def get_available_pairs(coin):
     url = "https://open-api.coinglass.com/public/v2/instrument"
     headers = {
         "accept": "application/json",
-        "coinglassSecret": "084a0f80e01549299f538c575836abf8",
+        "coinglassSecret": coinglass_api_key,
     }
 
     response = requests.get(url, headers=headers)
@@ -36,7 +44,7 @@ def fetch_ohlc_oi_data(exchange, pair):
 
     headers = {
         "accept": "application/json",
-        "coinglassSecret": "084a0f80e01549299f538c575836abf8",
+        "coinglassSecret": coinglass_api_key,
     }
 
     params = {
@@ -66,9 +74,9 @@ def fetch_price_ohlc_data(exchange, pair):
     url = f"https://open-api.coinglass.com/public/v2/indicator/price_ohlc"
     headers = {
         "accept": "application/json",
-        "coinglassSecret": "084a0f80e01549299f538c575836abf8",
+        "coinglassSecret": coinglass_api_key,
     }
-    params = {"ex": exchange, "pair": pair, "interval": "24h", "limit": 50}
+    params = {"ex": exchange, "pair": pair, "interval": "24h", "limit": 500}
 
     response = requests.get(url, params=params, headers=headers)
     if response.status_code == 200:
@@ -117,7 +125,7 @@ def fetch_top_long_short_ratio(exchange, pair):
     url = "https://open-api.coinglass.com/public/v2/indicator/top_long_short_account_ratio"
     headers = {
         "accept": "application/json",
-        "coinglassSecret": "084a0f80e01549299f538c575836abf8",
+        "coinglassSecret": coinglass_api_key,
     }
     params = {"ex": exchange, "pair": pair, "interval": "24h", "limit": 50}
 
@@ -136,9 +144,16 @@ def plot_long_short_ratios(df):
         df,
         x="createTime",
         y=["longRatio", "shortRatio"],
-        title="Long and Short Ratios Over Time",
+        title="Top Traders Accounts Ratio",
         labels={"value": "Ratio (%)", "createTime": "Date", "variable": "Ratio Type"},
         color_discrete_sequence=["green", "red"],
+    )
+    fig.update_layout(
+        yaxis=dict(
+            range=[0, 100],  # Set y-axis range from 0 to 100
+            dtick=10,  # Set y-axis ticks at every 10%
+            title="Percentage",
+        )
     )
     return fig
 
@@ -148,7 +163,7 @@ def fetch_top_long_short_position_ratio(exchange, pair):
     url = "https://open-api.coinglass.com/public/v2/indicator/top_long_short_position_ratio"
     headers = {
         "accept": "application/json",
-        "coinglassSecret": "084a0f80e01549299f538c575836abf8",
+        "coinglassSecret": coinglass_api_key,
     }
     params = {"ex": exchange, "pair": pair, "interval": "24h", "limit": 50}
 
@@ -168,17 +183,25 @@ def plot_top_traders_long_short_ratios(df):
         df,
         x="createTime",
         y=["longRatio", "shortRatio"],
-        title="Top Traders Long and Short Ratios Over Time",
+        title="Top Traders Position size ratio",
         labels={"value": "Ratio (%)", "createTime": "Date", "variable": "Ratio Type"},
         color_discrete_sequence=["green", "red"],
+    )
+    fig.update_layout(
+        yaxis=dict(
+            range=[0, 100],
+            dtick=10,
+            title="Percentage",
+        )
     )
     return fig
 
 
 # Streamlit App
-# Streamlit App
 def main():
-    st.title("Cryptocurrency Data Viewer")
+    st.set_page_config(layout="wide", page_icon="🧊")
+
+    st.title("Coin Advanced Metrics")
 
     # User input for coin
     coin = st.text_input("Enter the coin symbol (e.g., BTC):").upper()
@@ -201,20 +224,18 @@ def main():
             # Fetch Open Interest data
             col1, col2, col3, col4 = st.columns([1, 1, 1, 1])
             with col1:
-                st.write("Fetching Open Interest data...")
                 ohlc_data = fetch_ohlc_oi_data(selected_exchange, selected_pair)
                 ohlc_data = ohlc_data.sort_values("t", ascending=False).reset_index(
                     drop=True
                 )
                 latest_oi = ohlc_data.iloc[0]["c"]
-                st.metric("Open Interest", f"{latest_oi} BTC")
+                st.metric("Open Interest", f"{latest_oi:,} {coin}")
 
                 # Plot Open Interest data
-                fig_oi = plot_closing_prices(ohlc_data, "Open Interest Over Time")
+                fig_oi = plot_closing_prices(ohlc_data, "Open Interest")
 
             # Fetch Price OHLC data
             with col2:
-                st.write("Fetching Price OHLC data...")
                 price_ohlc_data = fetch_price_ohlc_data(
                     selected_exchange, selected_pair
                 )
@@ -225,11 +246,10 @@ def main():
                 st.metric("Closing Price", f"${latest_close}")
 
                 # Plot Price data
-                fig_price = plot_closing_prices(price_ohlc_data, "Price Over Time")
+                fig_price = plot_closing_prices(price_ohlc_data, "Price")
 
             # Fetch Top Long/Short Account Ratio data
             with col3:
-                st.write("Fetching Long/Short Ratios data...")
                 long_short_data = fetch_top_long_short_ratio(
                     selected_exchange, selected_pair
                 )
@@ -239,7 +259,7 @@ def main():
                 latest_long_ratio = long_short_data.iloc[0]["longRatio"]
                 latest_short_ratio = long_short_data.iloc[0]["shortRatio"]
                 st.metric(
-                    "Latest Long/Short Ratios",
+                    "Top Accounts Ratio",
                     f"{latest_long_ratio}/{latest_short_ratio}",
                 )
 
@@ -248,7 +268,6 @@ def main():
 
             # Fetch Top Long/Short Position Ratio data
             with col4:
-                st.write("Fetching Top Traders Long/Short Position Ratios data...")
                 top_traders_data = fetch_top_long_short_position_ratio(
                     selected_exchange, selected_pair
                 )
@@ -258,22 +277,29 @@ def main():
                 latest_long_ratio = top_traders_data.iloc[0]["longRatio"]
                 latest_short_ratio = top_traders_data.iloc[0]["shortRatio"]
                 st.metric(
-                    "Top Traders Long/Short Ratios",
+                    "Top Traders Position Size Ratios",
                     f"{latest_long_ratio}/{latest_short_ratio}",
                 )
 
             # Plot Top Traders Long and Short Ratios
             fig_top_traders_ratio = plot_top_traders_long_short_ratios(top_traders_data)
 
-            # Create columns for side-by-side display
-            col1, col2 = st.columns(2)
+            # Create columns for the top row side-by-side display
+            top_col1, top_col2 = st.columns(2)
 
-            # Display plots
-            with col1:
+            # Display top row plots
+            with top_col1:
                 st.plotly_chart(fig_price)
-                st.plotly_chart(fig_ratio)
-            with col3:
+            with top_col2:
                 st.plotly_chart(fig_oi)
+
+            # Create columns for the bottom row side-by-side display
+            bottom_col1, bottom_col2 = st.columns(2)
+
+            # Display bottom row plots
+            with bottom_col1:
+                st.plotly_chart(fig_ratio)
+            with bottom_col2:
                 st.plotly_chart(fig_top_traders_ratio)
 
 
